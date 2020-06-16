@@ -69,7 +69,9 @@ const Zoom = {
     if (zoom.scale < params.minRatio) {
       zoom.scale = (params.minRatio + 1) - (((params.minRatio - zoom.scale) + 1) ** 0.5);
     }
-    gesture.$imageEl.transform(`translate3d(0,0,0) scale(${zoom.scale})`);
+
+    const translate = Device.ios ? 'translate(0, 0)' : 'translate3d(0,0,0)';
+    gesture.$imageEl.transform(`${translate} scale(${zoom.scale})`);
   },
   onGestureEnd(e) {
     const swiper = this;
@@ -88,7 +90,9 @@ const Zoom = {
     }
     if (!gesture.$imageEl || gesture.$imageEl.length === 0) return;
     zoom.scale = Math.max(Math.min(zoom.scale, gesture.maxRatio), params.minRatio);
-    gesture.$imageEl.transition(swiper.params.speed).transform(`translate3d(0,0,0) scale(${zoom.scale})`);
+
+    const translate = Device.ios ? 'translate(0, 0)' : 'translate3d(0,0,0)';
+    gesture.$imageEl.transition(swiper.params.speed).transform(`${translate} scale(${zoom.scale})`);
     zoom.currentScale = zoom.scale;
     zoom.isScaling = false;
     if (zoom.scale === 1) gesture.$slideEl = undefined;
@@ -242,7 +246,8 @@ const Zoom = {
     const { gesture } = zoom;
     if (gesture.$slideEl && swiper.previousIndex !== swiper.activeIndex) {
       if (gesture.$imageEl) {
-        gesture.$imageEl.transform('translate3d(0,0,0) scale(1)');
+        const translate = Device.ios ? 'translate(0, 0)' : 'translate3d(0,0,0)';
+        gesture.$imageEl.transform(`${translate} scale(1)`);
       }
       if (gesture.$imageWrapEl) {
         gesture.$imageWrapEl.transform('translate3d(0,0,0)');
@@ -356,8 +361,11 @@ const Zoom = {
       translateX = 0;
       translateY = 0;
     }
+
     gesture.$imageWrapEl.transition(300).transform(`translate3d(${translateX}px, ${translateY}px,0)`);
-    gesture.$imageEl.transition(300).transform(`translate3d(0,0,0) scale(${zoom.scale})`);
+
+    const translate = Device.ios ? 'translate(0, 0)' : 'translate3d(0,0,0)';
+    gesture.$imageEl.transition(300).transform(`${translate} scale(${zoom.scale})`);
   },
   out() {
     const swiper = this;
@@ -380,7 +388,9 @@ const Zoom = {
     zoom.scale = 1;
     zoom.currentScale = 1;
     gesture.$imageWrapEl.transition(300).transform('translate3d(0,0,0)');
-    gesture.$imageEl.transition(300).transform('translate3d(0,0,0) scale(1)');
+
+    const translate = Device.ios ? 'translate(0, 0)' : 'translate3d(0,0,0)';
+    gesture.$imageEl.transition(300).transform(`${translate} scale(1)`);
     gesture.$slideEl.removeClass(`${params.zoomedSlideClass}`);
     gesture.$slideEl = undefined;
   },
