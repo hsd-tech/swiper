@@ -3,7 +3,8 @@ module.exports = {
     'navigation',
     'zoom',
     'lazy',
-    'autoplay'
+    'autoplay',
+    'effect-fade',
   ],
   themeColor: '#000',
   colors: {
